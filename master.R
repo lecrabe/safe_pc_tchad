@@ -3,7 +3,7 @@
 ####### Author:  remi.dannunzio@fao.org                               
 ####### Update:  2017/08/22                                       
 ####################################################################################
-asdasd
+
 ####### SET WHERE YOUR SCRIPTS ARE CLONED
 clonedir  <- paste0("/media/dannunzio/OSDisk/Users/dannunzio/Documents/countries/tchad/scripts_tchad/")
 scriptdir <- paste0(clonedir,"process/")
