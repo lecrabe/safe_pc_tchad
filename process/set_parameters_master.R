@@ -9,10 +9,10 @@
 ####################################################################################
 options(stringsAsFactors=FALSE)
 
-
 t1_dir    <- paste0(rootdir,"images/")
 t2_dir    <- paste0(rootdir,"images/")
 
+procimgdir   <- paste0(rootdir,"images/")
 training_dir <- paste0(rootdir,"training_manual/")
 dem_dir      <- paste0(rootdir,"dem_aoi/")
 result_dir   <- paste0(rootdir,"results/")
@@ -25,6 +25,7 @@ dir.create(dem_dir)
 dir.create(result_dir)
 dir.create(cloud_dir)
 dir.create(field_dir)
+dir.create(procimgdir)
 
 dem_input    <- paste0(dem_dir,"srtm_elev_30m_aoi.tif")
 slp_input    <- paste0(dem_dir,"srtm_slope_30m_aoi.tif")

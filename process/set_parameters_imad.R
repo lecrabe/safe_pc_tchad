@@ -28,6 +28,6 @@ imad_info<- paste0(imaddir,"tile_",tile,"imad_info.txt")   # imad gdalinfo value
 
 norm_imad<-paste0(imaddir,"tile_",tile,"_normimad.tif")
 
-t1_input <- t1_file  #paste0(imaddir,"tile_",tile,"_t1.tif") # name of band-harmonized and co-mask imagery
-t2_input <- t2_file  #paste0(imaddir,"tile_",tile,"_t2.tif") # name of band-harmonized and co-mask imagery
+t1_input   <- t1_file  #paste0(imaddir,"tile_",tile,"_t1.tif") # name of band-harmonized and co-mask imagery
+t2_input   <- t2_file  #paste0(imaddir,"tile_",tile,"_t2.tif") # name of band-harmonized and co-mask imagery
 t1_input_o <- paste0(t1_dir,"merge_",tile,"_",time1,"_origin.tif")
