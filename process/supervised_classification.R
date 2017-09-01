@@ -52,17 +52,17 @@ training <- training[training$tr_code != 0 ,c("tr_code",paste0("b",1:nband))]
 training <- training[rowSums(training[,c(paste0("b",1:nband))])!=0,]
 
 # Ratios : take them all for the training set
-#training$rat43<-(training$b4+0.5)/(training$b3+0.5);
-#training$rat42<-(training$b4+0.5)/(training$b2+0.5);
-#training$rat41<-(training$b4+0.5)/(training$b1+0.5);
+training$rat43<-(training$b4+0.5)/(training$b3+0.5);
+training$rat42<-(training$b4+0.5)/(training$b2+0.5);
+training$rat41<-(training$b4+0.5)/(training$b1+0.5);
 training$rat32<-(training$b3+0.5)/(training$b2+0.5);
 training$rat31<-(training$b3+0.5)/(training$b1+0.5);
 training$rat21<-(training$b2+0.5)/(training$b1+0.5);
 
 # Ratios : take them all for the observation set
-#img_segs_spec$rat43<-(img_segs_spec$b4+0.5)/(img_segs_spec$b3+0.5);
-#img_segs_spec$rat42<-(img_segs_spec$b4+0.5)/(img_segs_spec$b2+0.5);
-#img_segs_spec$rat41<-(img_segs_spec$b4+0.5)/(img_segs_spec$b1+0.5);
+img_segs_spec$rat43<-(img_segs_spec$b4+0.5)/(img_segs_spec$b3+0.5);
+img_segs_spec$rat42<-(img_segs_spec$b4+0.5)/(img_segs_spec$b2+0.5);
+img_segs_spec$rat41<-(img_segs_spec$b4+0.5)/(img_segs_spec$b1+0.5);
 img_segs_spec$rat32<-(img_segs_spec$b3+0.5)/(img_segs_spec$b2+0.5);
 img_segs_spec$rat31<-(img_segs_spec$b3+0.5)/(img_segs_spec$b1+0.5);
 img_segs_spec$rat21<-(img_segs_spec$b2+0.5)/(img_segs_spec$b1+0.5);
@@ -106,8 +106,8 @@ system(sprintf("gdal_calc.py -A %s -B %s --type=Byte --co COMPRESS=LZW --outfile
 
 
 ####################  CREATE A PSEUDO COLOR TABLE
-cols <- col2rgb(c("black","darkgreen","lightyellow","lightsalmon","darkgrey"))
-
+cols <- col2rgb(c("black","darkgreen","lightyellow","yellow","darkgrey"))
+colors()
 pct <- data.frame(cbind(c(0:4),
                         cols[1,],
                         cols[2,],

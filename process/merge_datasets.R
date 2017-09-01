@@ -55,9 +55,9 @@ df$sortid <- row(df)[,1]
 df <- merge(df,df_im,by.x="sg_id",by.y="sg_id")
 df <- merge(df,df_t1,by.x="sg_id",by.y="sg_id")
 
-df <- merge(df,legend,by.x="t2_class",by.y="value")
+#df <- merge(df,legend,by.x="t2_class",by.y="value")
 head(df)
-table(df$class,df$t2_class)
+#table(df$class,df$t2_class)
 
 ################################################################################
 ## Determine criterias for change 
@@ -93,9 +93,9 @@ tryCatch({
 ## Fuelwood loss is if it was majority of Fuelwood in t1 and other than water in t2
 tryCatch({
   df1[
-    df1$t2_total > 10 &                                # size is bigger than 10 pixels (1 pixel = 1.5m*1.5m = 2.25 m2)
+    df1$t2_total > 5 &                                # size is bigger than 10 pixels (1 pixel = 1.5m*1.5m = 2.25 m2)
     df1[,my_fuelwood_classes_t2] < 0.1*df1$t2_total &  # time 2 classification says less than 10% fuelwood
-    df1[,my_fuelwood_classes_t1] > 0.9*df1$t1_total &  # time 1 classification says more than 90% fuelwood
+    df1[,my_fuelwood_classes_t1] > 0.4*df1$t1_total &  # time 1 classification says more than 90% fuelwood
     abs(df1$imad4) > 1                                 # IMAD indicates some change is occuring
     ,]$recl <- 1
 }, error=function(e){cat("No such configuration\n")}
