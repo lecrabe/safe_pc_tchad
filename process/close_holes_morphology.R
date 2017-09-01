@@ -31,7 +31,7 @@ system(sprintf("gdal_calc.py -A %s --outfile=%s --calc=\"%s\"",
 ################################################################################
 ## Recombine masks 
 ################################################################################
-system(sprintf("gdal_calc.py -A %s -B %s --outfile=%s --calc=\"%s\"",
+system(sprintf("gdal_calc.py -A %s -B %s --type=Byte --outfile=%s --calc=\"%s\"",
                chg_class,
                paste0(mergedir,"/","tmp_closing_binary_reclass_loss.tif"),
                paste0(mergedir,"/","tmp_closed_binary_reclass_loss.tif"),
@@ -39,6 +39,9 @@ system(sprintf("gdal_calc.py -A %s -B %s --outfile=%s --calc=\"%s\"",
 ))
 
 
+################################################################################
+## Add pseudocolor Table
+################################################################################
 system(sprintf("(echo %s) | oft-addpct.py %s %s",
                paste0(mergedir,"/color_table.txt"),
                paste0(mergedir,"/","tmp_closed_binary_reclass_loss.tif"),
