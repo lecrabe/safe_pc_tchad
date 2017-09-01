@@ -46,7 +46,7 @@ nbbands        <- 4
 nb_clusters <- 50   # Number of clusters in the KMEANS classification
 
 class <- 1          # class for LOSS in mergedataset
-size_morpho <- 10   # size of morphological closing to be applied
+size_morpho <- 2   # size of morphological closing to be applied
 
 ####################################################################################
 #######          TRAINING DATA LEGEND
