@@ -30,5 +30,6 @@ t2_cl_st  <- paste0(mergedir,"/tile_",tile,"_t2_class_stats.txt") # stats of tim
 t1_cl_st  <- paste0(mergedir,"/tile_",tile,"_t1_class_stats.txt") # stats of time 1
 im_cl_st  <- paste0(mergedir,"/tile_",tile,"_im_class_stats.txt") # stats of IMAD change detection 
 
-reclass   <- paste0(mergedir,"/tile_",tile,"_reclass.txt")        # reclassified stats
-chg_class <- paste0(mergedir,"/tile_",tile,"_change_reclass.tif") # reclassified tif
+reclass    <- paste0(mergedir,"/tile_",tile,"_reclass.txt")        # reclassified stats
+chg_class  <- paste0(mergedir,"/tile_",tile,"_change_reclass.tif") # reclassified tif
+chg_closed <- paste0(mergedir,"/tile_",tile,"_change_closed.tif") # reclassified tif

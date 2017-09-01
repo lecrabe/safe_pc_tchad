@@ -41,9 +41,12 @@ spacing_km  <- 50   # UTM in meters, Point spacing in grid for unsupervised clas
 minsg_size  <- 20   # Minimum segment size in numbers of pixels
 
 nb_chdet_bands <- 4 # Number of common bands between imagery for change detection
-nbbands <- 4
+nbbands        <- 4
 
 nb_clusters <- 50   # Number of clusters in the KMEANS classification
+
+class <- 1          # class for LOSS in mergedataset
+size_morpho <- 10   # size of morphological closing to be applied
 
 ####################################################################################
 #######          TRAINING DATA LEGEND

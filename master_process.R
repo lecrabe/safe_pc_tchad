@@ -32,7 +32,8 @@ source(paste0(scriptdir,"supervised_classification.R"),echo=TRUE)
 ################################################################################
 ## Merge date 1 and date 2 (uncomment necessary script)
 source(paste0(scriptdir,"merge_datasets.R"),echo=TRUE)
- 
+source(paste0(scriptdir,"close_holes_morphology.R"),echo=TRUE)
+
 ################################################################################
 ## Call field data and inject into LCC map to generate statistics and biomass maps
 # source(paste0(scriptdir,"inject_field_data.R"),echo=TRUE)
