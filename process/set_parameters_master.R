@@ -13,6 +13,7 @@ t1_dir    <- paste0(rootdir,"images/")
 t2_dir    <- paste0(rootdir,"images/")
 
 procimgdir   <- paste0(rootdir,"images/")
+shift_dir    <- paste0(rootdir,"shift_images/")
 training_dir <- paste0(rootdir,"training_manual/")
 dem_dir      <- paste0(rootdir,"dem_aoi/")
 result_dir   <- paste0(rootdir,"results/")

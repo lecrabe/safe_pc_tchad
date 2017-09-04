@@ -20,6 +20,7 @@ packages(stringr)
 packages(plyr)
 
 packages(snow)
+packages(numbers)
 
 packages(leaflet)
 packages(RColorBrewer)

@@ -8,10 +8,17 @@ imad_start_time <- Sys.time()
 ####################################################################################################################
 ########### Run change detection
 ###################################################################################################################
-r1         <- brick(t1_input)
-origin(r1) <- origin(raster(t2_input))
+system(sprintf("oft-clip.pl %s %s %s",
+               t2_input,
+               t1_input,
+               paste0(imaddir,"tmp_input_1.tif")
+               ))
 
+
+r1         <- brick(paste0(imaddir,"tmp_input_1.tif"))
+origin(r1) <- origin(raster(t2_input))
 writeRaster(r1,t1_input_o,overwrite=T)
+
 
 ## Perform change detection
 system(sprintf("otbcli_MultivariateAlterationDetector -in1 %s -in2 %s -out %s",
