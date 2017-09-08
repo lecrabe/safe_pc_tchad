@@ -5,24 +5,31 @@
 ####################################################################################
 imad_start_time <- Sys.time()
 
-####################################################################################################################
+###################################################################################################################
+########### Standardize inputs and align origin
+###################################################################################################################
+system(sprintf("gdal_translate -co COMPRESS=LZW %s %s",
+               t1_file,
+               t1_input))
+
+system(sprintf("oft-clip.pl %s %s %s",
+               t1_input,
+               t2_file,
+               paste0(imaddir,"tmp_input_2.tif")
+))
+
+r2 <- brick(paste0(imaddir,"tmp_input_2.tif"))
+origin(r2) <- origin(raster(t1_input))
+writeRaster(r2,t2_input,overwrite=T)
+
+###################################################################################################################
 ########### Run change detection
 ###################################################################################################################
-system(sprintf("oft-clip.pl %s %s %s",
-               t2_input,
-               t1_input,
-               paste0(imaddir,"tmp_input_1.tif")
-               ))
-
-
-r1         <- brick(paste0(imaddir,"tmp_input_1.tif"))
-origin(r1) <- origin(raster(t2_input))
-writeRaster(r1,t1_input_o,overwrite=T)
 
 
 ## Perform change detection
 system(sprintf("otbcli_MultivariateAlterationDetector -in1 %s -in2 %s -out %s",
-               t1_input_o,
+               t1_input,
                t2_input,
                imad
                ))

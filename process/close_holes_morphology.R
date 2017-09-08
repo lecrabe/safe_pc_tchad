@@ -54,9 +54,7 @@ system(sprintf("gdal_translate -ot byte -co COMPRESS=LZW %s %s",
 ))
 
 
-system(sprintf("rm %s",
-               paste0(mergedir,"/","tmp_*")
-))
+#system(sprintf("rm %s",paste0(mergedir,"/","tmp_*")))
 
 
 (closing_time <- Sys.time() - closing_start_time)

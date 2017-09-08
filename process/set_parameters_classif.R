@@ -54,5 +54,5 @@ img_clas  <- paste0(outdir,"/",basename,"_classif.txt") # results of classificat
 all_sg_rf <- paste0(outdir,"/",basename,"_rf.tif")      # results of classification as tif
 output_rf <- paste0(outdir,"/",basename,"_output.tif")   # output of process
 
-train_man_shp  <- paste0(training_dir,"train_",basename,".shp")  # 
+#train_man_shp  <- paste0(training_dir,"train_",basename,".shp")  # 
 train_man_tif  <- paste0(training_dir,"train_",basename,".tif")  # 

@@ -4,7 +4,7 @@
 ####### Update:  2016/11/08                                          
 ####################################################################################
 
-merge_time <- Sys.time()
+merge_start_time <- Sys.time()
 
 
 ################################################################################
@@ -69,7 +69,9 @@ df1 <- df[,colSums(df[,!(names(df) %in% names(legend))]) != 0]
 summary(df1$t1_total)
 
 ## Create list of classes that have some fuelwood biomass in them
-fuelwood_classes <- legend[c(grep(pattern="forest",legend$class)),]$class
+fuelwood_classes <- legend[c(grep(pattern="forest",legend$class),
+                             grep(pattern="shadow",legend$class)
+                             ),]$class
 
 (my_fuelwood_classes_t2 <- paste0("t2_",fuelwood_classes))
 (my_fuelwood_classes_t1 <- paste0("t1_",fuelwood_classes))
@@ -80,12 +82,21 @@ head(df1)
 ### By default it is all "other land"
 df1$recl <- 3
 
+### No data
+tryCatch({
+  df1[
+    df1$t1_no_data > 0.5 * df1$t1_total |
+    df1$t2_no_data > 0.5 * df1$t2_total ,
+    ]$recl <- 0
+}, error=function(e){cat("No such configuration\n")}
+)
+
 ## Fuelwood stable is if it was majority of Fuelwood in both time periods
 tryCatch({
   df1[
       df1$t2_total > 5 &                                 # size is bigger than 10 pixels (1 pixel = 0.6m*0.6m = 0.36 m2)
-      df1[,my_fuelwood_classes_t2] > 0.9*df1$t2_total &  # time 2 classification says more than 90% fuelwood
-      df1[,my_fuelwood_classes_t1] > 0.9*df1$t1_total ,  # time 1 classification says more than 90% fuelwood
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t2])) > 0.9*df1$t2_total &  # time 2 classification says more than 90% fuelwood
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t1])) > 0.9*df1$t1_total ,  # time 1 classification says more than 90% fuelwood
     ]$recl <- 2
 }, error=function(e){cat("No such configuration\n")}
 )
@@ -94,9 +105,9 @@ tryCatch({
 tryCatch({
   df1[
     df1$t2_total > 5 &                                # size is bigger than 10 pixels (1 pixel = 1.5m*1.5m = 2.25 m2)
-    df1[,my_fuelwood_classes_t2] < 0.1*df1$t2_total &  # time 2 classification says less than 10% fuelwood
-    df1[,my_fuelwood_classes_t1] > 0.4*df1$t1_total &  # time 1 classification says more than 90% fuelwood
-    abs(df1$imad4) > 1                                 # IMAD indicates some change is occuring
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t2])) < 0.2*df1$t2_total &  # time 2 classification says less than 10% fuelwood
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t1])) > 0.9*df1$t1_total &  # time 1 classification says more than 90% fuelwood
+      abs(df1$imad4) > 0.2                              # IMAD indicates some change is occuring
     ,]$recl <- 1
 }, error=function(e){cat("No such configuration\n")}
 )
@@ -105,9 +116,9 @@ tryCatch({
 tryCatch({
   df1[
     df1$t2_total > 10 &                                  # size is bigger than 10 pixels (1 pixel = 1.5m*1.5m = 2.25 m2)
-      df1[,my_fuelwood_classes_t2] > 0.9*df1$t2_total &  # time 2 classification says more than 90% fuelwood
-      df1[,my_fuelwood_classes_t1] < 0.1*df1$t1_total &  # time 1 classification says less than 10% fuelwood
-      abs(df1$imad4) > 1 ,
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t2])) > 0.9*df1$t2_total &  # time 2 classification says more than 90% fuelwood
+      rowSums(as.data.frame(df1[,my_fuelwood_classes_t1])) < 0.2*df1$t1_total &  # time 1 classification says less than 10% fuelwood
+      abs(df1$imad4) > 0.5 ,
     ]$recl <- 4
 }, error=function(e){cat("Configuration impossible \n")}
 )
@@ -157,5 +168,8 @@ system(sprintf("gdal_translate -ot byte -co COMPRESS=LZW %s %s",
                chg_class
                ))
 
-system(sprintf(paste0("rm ",mergedir,"/","tmp*.tif")))
+#system(sprintf(paste0("rm ",mergedir,"/","tmp*.tif")))
 
+#df2[df2$sg_id == 6343080,]
+
+(merge_time <- Sys.time() - merge_start_time )

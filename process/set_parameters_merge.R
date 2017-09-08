@@ -10,9 +10,7 @@
 imaddir       <- paste0(tiledir,"/imad/")
 res_time1_dir <- paste0(tiledir,"/time1/")
 res_time2_dir <- paste0(tiledir,"/time2/")
-mergedir      <- paste0(tiledir,"/change/")
-
-comb_dir     <- paste0(result_dir,"aoi_bb_vhr_combined_1994_2003_2016/")
+mergedir      <- paste0(tiledir,"/change",time,"/")
 
 dir.create(mergedir)
 

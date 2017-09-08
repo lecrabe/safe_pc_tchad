@@ -29,32 +29,57 @@ p_procdir  <- paste0(clonedir,"pre-processing/")
 source(paste0(scriptdir,"load_packages.R"),echo=TRUE)
 
 ####################################################################################
+#######          SET PARAMETERS GENERAL
+####################################################################################
+source(paste0(scriptdir,"set_parameters_master.R"),echo=TRUE)
+
+####################################################################################
 #######          CHANGE ACCORDINGLY TO PERIOD OF INTEREST
 ####################################################################################
 time1       <- "2004"
 time2       <- "2016"
-tile        <- "aoi1_clip"
+tile        <- "aoi1_east"
+
+t1_file  <- paste0(t1_dir,"aoi1_2004_east_utm_shift.tif")
+t2_file  <- paste0(t2_dir,"aoi1_2016_spot.TIF")
+
+t1_train <- paste0(training_dir,"training_aoi1_2004.shp")
+t2_train <- paste0(training_dir,"training_aoi1_2016.shp")
 
 ####################################################################################
-#######          SET PARAMETERS
+#######          SET PARAMETERS FOR THE IMAGES OF INTEREST
 ####################################################################################
-source(paste0(scriptdir,"set_parameters_master.R"),echo=TRUE)
 source(paste0(scriptdir,"set_parameters_imad.R"),echo=TRUE)
 
 ################################################################################
 ## Parameters for classification for time 1
-outdir   <- paste0(tiledir,"/time1/")
-im_input <- t1_input
+outdir        <- paste0(tiledir,"/time1/")
+dir.create(outdir)
+im_input      <- t1_input
+train_man_shp <- t1_train
 source(paste0(scriptdir,"set_parameters_classif.R"),echo=TRUE)
+
 t1_file_m   <-  output_rf   # time 1 file
-segs_id     <- all_sg_id
- 
+t1_segs     <- all_sg_id
+segs_id     <- t1_segs
+time        <- time1
+
+################################################################################
+## Parameters for merge
+source(paste0(scriptdir,"set_parameters_merge.R"),echo=TRUE)
+
+
 ################################################################################
 ## Parameters for classification for time 2
 outdir  <- paste0(tiledir,"/time2/")
+dir.create(outdir)
 im_input <- t2_input
 source(paste0(scriptdir,"set_parameters_classif.R"),echo=TRUE)
+
 t2_file_m   <-  output_rf  # time 2 file
+t2_segs     <- all_sg_id
+segs_id     <- t2_segs
+time        <- time2
 
 ################################################################################
 ## Parameters for merge

@@ -178,7 +178,7 @@ system(sprintf("gdal_merge.py -o %s -n 0 -co COMPRESS=LZW -co BIGTIFF=YES -v %s 
 
 #######  COMPRESS
 system(sprintf("gdal_translate -co COMPRESS=LZW -ot Byte -co BIGTIFF=YES %s %s",
-               paste0(procimgdir,"tmp_2004_aoi1_merge.tif"),
+               paste0(procimgdir,"tmp_aoi1_2004_merge.tif"),
                paste0(procimgdir,"merge_aoi1_2004.tif")
 ))
 
