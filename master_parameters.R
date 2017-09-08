@@ -63,6 +63,7 @@ t1_file_m   <-  output_rf   # time 1 file
 t1_segs     <- all_sg_id
 segs_id     <- t1_segs
 time        <- time1
+change_t1   <- chg_closed
 
 ################################################################################
 ## Parameters for merge
@@ -80,7 +81,10 @@ t2_file_m   <-  output_rf  # time 2 file
 t2_segs     <- all_sg_id
 segs_id     <- t2_segs
 time        <- time2
+change_t2   <- chg_closed
 
 ################################################################################
 ## Parameters for merge
 source(paste0(scriptdir,"set_parameters_merge.R"),echo=TRUE)
+
+
