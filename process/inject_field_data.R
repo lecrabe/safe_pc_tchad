@@ -4,42 +4,52 @@
 ####### Update:  2016/11/08                                          
 ####################################################################################
 
-field_time <- Sys.time()
+field_start_time <- Sys.time()
 
 ####################################################################################
-### Read shapefile with subplots and AGB data per subplot
-shp <- readOGR(plot_shp)
-agb <- read.csv(agb_data)
+### Read field plot files
+plots <- read.csv(paste0(field_dir,"plot.csv"))
+trees <- read.csv(paste0(field_dir,"tree.csv"))
+
+################# Create spatial point file 
+sp_plot <- SpatialPointsDataFrame(
+  coords = plots[,c("gps_location_x","gps_location_y")],
+  data   = plots,
+  proj4string=CRS("+init=epsg:4326")
+)
+
+proj_utm <- proj4string(raster(paste0(comb_dir,"aoi1_merged_change.tif")))
+sp_plot_utm <- spTransform(sp_plot,proj_utm)
 
 ####################################################################################
 ### Check data and set names
-table(shp@data$plot,shp@data$subplot)
-table(agb$plot_id)
-
-names(agb)
-agb <- agb[,c("plot_id","subplot_id","tree_id","tree_name","plot_radius","stump_height","tree_dia","tree_total_lgt","density","slope" )]
-
-summary(agb)
-
-summary(agb[agb$tree_dia <  30,]$plot_radius)
-summary(agb[agb$tree_dia >= 30,]$plot_radius)
+names(trees)
+summary(trees)
 
 ####################################################################################
 ### Identify if the record is a stump
-agb$stump <- 0
-agb[is.na(agb$tree_total_lgt),]$stump <- 1
+trees$stump <- 0
+trees[is.na(trees$height),]$stump <- 1
 
+trees[trees$stump == 1,"dbh"]    <- trees[trees$stump == 1,"diam_base_souche"]
+trees[trees$stump == 1,"height"] <- trees[trees$stump == 1,"height_souche"]
+summary(trees)
+
+trees$agb <- 0
+plot(the_trees$dbh)
 ####################################################################################
 ### Apply the CHAVE equation for the trees "AGB = 0.0673*(dbh^2*h*wd)^0.976"
-agb$agb_tree <- 0.0673*(agb$tree_dia*agb$tree_dia*agb$tree_total_lgt*agb$density)^0.976
+the_trees <- trees[trees$stump == 0,]
+trees[trees$stump == 0,]$agb <- 0.0673*(the_trees$dbh*the_trees$dbh*the_trees$height*1)^0.976
 
 ####################################################################################
 ### Apply cylinder equation for the stumps "AGB = pi *(dbh/2)^2 * h * wd / 1000"
-agb[agb$stump ==1,]$agb_tree <- pi * (agb[agb$stump ==1,]$tree_dia/2)^2 *  agb[agb$stump ==1,]$stump_height / 100 * agb[agb$stump ==1,]$density / 1000
+the_stumps <- trees[trees$stump == 1,]
+trees[trees$stump == 1,]$agb <- pi * (the_stumps$dbh/2)^2 *  the_stumps$height / 100 * 1 / 1000
 
 ####################################################################################
 ### Apply expansion factor to the biomass
-agb$agb_ha <- agb$agb_tree * 10000 / (agb$plot_radius*agb$plot_radius*pi*cos(atan((agb$slope/100))))
+trees$agb_ha <- trees$agb * 10000 / (trees$plot_radius*trees$plot_radius*pi*cos(atan((trees$slope/100))))
 
 ####################################################################################
 ### Compute Basal Area
@@ -117,8 +127,8 @@ names(my_legend_lc) <- c("lc_code","lc_class")
 my_legend_change <- data.frame(cbind(
   1:9,
   c("fuelwood","non_fuelwood","loss_recent","loss_old","gain_recent","gain_old","degradation","agriculture","water")
-  )
-  )
+)
+)
 
 names(my_legend_change) <- c("chge_code","chge_class")
 
@@ -195,14 +205,14 @@ df$code <- df$Var1+df$Var2
 df <- arrange(df,code)
 
 df$agb <- c(unlist(agb_all_trans$X1),
-                unlist(agb_all_trans$X2),
-                unlist(agb_all_trans$X3),
-                unlist(agb_all_trans$X4),
-                unlist(agb_all_trans$X5),
-                unlist(agb_all_trans$X6),
-                unlist(agb_all_trans$X7),
-                unlist(agb_all_trans$X8),
-                unlist(agb_all_trans$X9))
+            unlist(agb_all_trans$X2),
+            unlist(agb_all_trans$X3),
+            unlist(agb_all_trans$X4),
+            unlist(agb_all_trans$X5),
+            unlist(agb_all_trans$X6),
+            unlist(agb_all_trans$X7),
+            unlist(agb_all_trans$X8),
+            unlist(agb_all_trans$X9))
 df$agbC <- df$agb*.47/1000
 
 

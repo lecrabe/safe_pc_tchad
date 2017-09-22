@@ -38,13 +38,13 @@ source(paste0(scriptdir,"set_parameters_master.R"),echo=TRUE)
 ####################################################################################
 time1       <- "2004"
 time2       <- "2016"
-tile        <- "aoi1_east"
+tile        <- "aoi2_tile4"
 
-t1_file  <- paste0(t1_dir,"aoi1_2004_east_utm_shift.tif")
-t2_file  <- paste0(t2_dir,"aoi1_2016_spot.TIF")
+t1_file  <- paste0(t1_dir,"aoi2_2004_tile4_utm_shift.tif")
+t2_file  <- paste0(t2_dir,"aoi2_2016_spot_utm.tif")
 
-t1_train <- paste0(training_dir,"training_aoi1_2004.shp")
-t2_train <- paste0(training_dir,"training_aoi1_2016.shp")
+t1_train <- paste0(training_dir,"tchad_merge_training_data_2004.shp")
+t2_train <- paste0(training_dir,"tchad_merge_training_data_2016.shp")
 
 ####################################################################################
 #######          SET PARAMETERS FOR THE IMAGES OF INTEREST

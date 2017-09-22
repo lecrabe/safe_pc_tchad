@@ -73,8 +73,9 @@ fuelwood_classes <- legend[c(grep(pattern="forest",legend$class),
                              grep(pattern="shadow",legend$class)
                              ),]$class
 
-(my_fuelwood_classes_t2 <- paste0("t2_",fuelwood_classes))
-(my_fuelwood_classes_t1 <- paste0("t1_",fuelwood_classes))
+(my_fuelwood_classes_t2 <- names(df1)[names(df1) %in% paste0("t2_",fuelwood_classes)])
+
+(my_fuelwood_classes_t1 <- names(df1)[names(df1) %in% paste0("t1_",fuelwood_classes)])
 
 head(df1)
 ## Create a new reclass column: 1==Fuelwood loss, 2==Fuelwood stable, 3==the rest, 4==Fuelwood Gains
@@ -168,7 +169,7 @@ system(sprintf("gdal_translate -ot byte -co COMPRESS=LZW %s %s",
                chg_class
                ))
 
-#system(sprintf(paste0("rm ",mergedir,"/","tmp*.tif")))
+system(sprintf(paste0("rm ",mergedir,"/","tmp*.tif")))
 
 #df2[df2$sg_id == 6343080,]
 

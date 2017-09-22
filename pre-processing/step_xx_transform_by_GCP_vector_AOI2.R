@@ -10,17 +10,20 @@
 aoi <- "aoi2"
 
 #################### READ SHIFT FILE AS SHAPEFILE
-shp_shift    <- readOGR(paste0(shift_dir,"gcp_lines_aoi2.shp"),"gcp_lines_aoi2")
+shp_shift    <- readOGR(paste0(shift_dir,"tchad_GCP_lines.shp"),"tchad_GCP_lines")
 im_reference <- paste0(procimgdir,aoi,"_2016_spot_utm.tif")
 
+tile <- 1
+tile_attr <- "image"
 #################### Loop through blocks of image
-for(tile in 1:4){
+for(tile in 1:2){
   
   im_to_shift <- paste0(procimgdir,aoi,"_2004_tile",tile,"_utm.tif")
   im_shifted  <- paste0(procimgdir,aoi,"_2004_tile",tile,"_utm_shift.tif")
   
+  tile_name <- paste0("tile",tile)
   ### Select only shifts for that block
-  shift  <- shp_shift[shp_shift@data$tile == tile,]
+  shift  <- shp_shift[shp_shift@data[,tile_attr] == tile_name,]
   nb_vec <- length(shift)
 
   ### Initialize shifting data.frame and translate shapefile into "origin >> destination" coordinates set
@@ -136,12 +139,18 @@ for(tile in 1:4){
   #################### FINAL REWARP
   system(sprintf("gdalwarp -r bilinear -t_srs EPSG:32633 %s %s",
                  paste0(procimgdir,"tmp_",aoi,"_tile_",tile,"_shift.tif"),
-                 im_shifted 
+                 paste0(procimgdir,"tmp_",aoi,"_tile_",tile,"_shift_rewarp.tif")
+                 ))
+  
+  #################### TRANSLATE ORIGIN IMG
+  system(sprintf("gdal_translate -co COMPRESS=LZW %s %s",
+                 paste0(procimgdir,"tmp_",aoi,"_tile_",tile,"_shift_rewarp.tif"),
+                 im_shifted
                  ))
   
 }
 
 #################### Clean
 system(sprintf("rm -r %s",
-               paste0(procimgdir,"tmp_aoi1_2004_*.tif")
+               paste0(procimgdir,"tmp_aoi2_*.tif")
 ))
